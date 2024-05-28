@@ -1,0 +1,14 @@
+# Input and output
+input/
+output/
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+.venv/
+.pytest_cache/
+
+# VS Code
+.vscode/
