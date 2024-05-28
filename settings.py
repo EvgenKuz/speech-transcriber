@@ -8,7 +8,7 @@ settings_file = Path("settings.toml")
 
 
 def create_toml_settings():
-    assemblyai_api_key = input("Введите ваш Assembly API ключ: ")
+    assemblyai_api_key = input("Введите ваш AssemblyAI API ключ: ")
 
     settings_dict = dict(api=dict(tokens=dict(assemblyai=assemblyai_api_key)))
     with open(settings_file, "w") as file:
