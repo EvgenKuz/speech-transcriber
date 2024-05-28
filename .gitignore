@@ -17,3 +17,8 @@ __pycache__/
 # App
 settings.toml
 log.txt
+
+# PyInstaller
+build/
+dist/
+main.spec

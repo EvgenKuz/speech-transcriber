@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Speech transcriber"
-version = "0.1.0"
+version = "0.2.0"
 description = "Transcribes audio file"
 authors = ["Eugene Smith <eugeny.kuz@gmail.com>"]
 license = "Proprietary"
@@ -8,7 +8,7 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.11,<3.13"
 assemblyai = "^0.26.0"
 python-dotenv = "^1.0.1"
 tomli-w = "^1.0.0"
@@ -21,6 +21,10 @@ isort = "^5.13.2"
 pytest = "^8.2.1"
 flake8-bugbear = "^24.4.26"
 pre-commit = "^3.7.1"
+
+
+[tool.poetry.group.build.dependencies]
+pyinstaller = "^6.7.0"
 
 [build-system]
 requires = ["poetry-core"]

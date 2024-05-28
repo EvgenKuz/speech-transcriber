@@ -1,4 +1,5 @@
 import traceback
+from datetime import datetime
 from pathlib import Path
 
 import filetype
@@ -106,8 +107,11 @@ def main():
                 log.write("\n")
             continue
 
-        save_to = f"output/{file.name}_transcribed.txt"
-        save_transcribed_to_file(transcribed_audio, save_to, True)
+        save_to = Path(
+            f"output/{file.name}_transcribed_{datetime.now().isoformat()}.txt"
+        )
+        save_to.parent.mkdir(exist_ok=True)
+        save_transcribed_to_file(transcribed_audio, save_to, False)
 
         print(f"Файл сохранён как '{save_to}'.")
 
