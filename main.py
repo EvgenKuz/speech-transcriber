@@ -1,6 +1,8 @@
 import traceback
 from pathlib import Path
 
+import filetype
+
 import settings
 from errors import AudioBiggerThanTwoPointTwoGigabytes, TranscribingError
 from transcribe_audio import save_transcribed_to_file, transcribe_audio
@@ -8,7 +10,11 @@ from transcribe_audio import save_transcribed_to_file, transcribe_audio
 
 def get_files_list(path: Path) -> list[Path]:
     if path.is_file():
-        return [path]
+        kind = filetype.guess(str(path))
+
+        if kind is not None and kind.mime.startswith("audio/"):
+            return [path]
+        return []
 
     files = []
 
@@ -30,7 +36,7 @@ def load_setting():
 def ask_for_files() -> Path:
     while True:
         path = input(
-            "Введи путь к аудио-файлу или папке с аудио-файлами, "
+            "Введите путь к аудиофайлу или папке с аудиофайлами, "
             "которые вы хотите транскрибировать (По-умолчанию: input/): "
         )
         if not path:
@@ -48,7 +54,10 @@ def ask_for_files() -> Path:
 
 def ask_are_files_correct(path: Path) -> list[Path]:
     files = get_files_list(path)
-    print("Найденные файлы:")
+    if not files:
+        print("Не удалась найти ни одного аудиофайла.")
+        exit(1)
+    print("Найденные аудиофайлы:")
     for file in files:
         print("\t-", file)
     print()
