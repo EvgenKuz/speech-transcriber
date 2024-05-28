@@ -16,3 +16,11 @@
 2. Установить [Poetry](https://python-poetry.org/docs/)
 3. Установить зависимости, запустив `poetry install --with dev`
 4. Запустить `poetry run pre-commit install`
+
+## Сборка исполнительного файла
+
+1. Установить [Python 3.11+](https://www.python.org/downloads/)
+2. Установить [Poetry](https://python-poetry.org/docs/)
+3. Установить зависимости, запустив `poetry install --with build`
+4. Запустить `poetry run pyinstaller main.py`
+5. Сборку можно найти в `./dist/main`
