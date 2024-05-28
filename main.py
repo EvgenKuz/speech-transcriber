@@ -1,10 +1,24 @@
+import traceback
 from pathlib import Path
 
 import settings
+from errors import AudioBiggerThanTwoPointTwoGigabytes, TranscribingError
 from transcribe_audio import save_transcribed_to_file, transcribe_audio
 
 
-def main():
+def get_files_list(path: Path) -> list[Path]:
+    if path.is_file():
+        return [path]
+
+    files = []
+
+    for file in path.iterdir():
+        files.extend(get_files_list(file))
+
+    return files
+
+
+def load_setting():
     if not settings.settings_file.exists():
         print("Это ваш первый запуск программы, необходимо создать файл с настройками.")
         settings.create_toml_settings()
@@ -12,21 +26,81 @@ def main():
     settings.load_toml_settings()
     print(f"Настройки загруженый из файла {settings.settings_file}.")
 
-    while True:
-        file_location = input("What file to transcribe?\n")
-        file = Path(file_location)
 
-        if not file.exists():
-            print(f"File ({file_location}) does not exist")
+def ask_for_files() -> Path:
+    while True:
+        path = input(
+            "Введи путь к аудио-файлу или папке с аудио-файлами, "
+            "которые вы хотите транскрибировать (По-умолчанию: input/): "
+        )
+        if not path:
+            path = "input/"
+        path = Path(path)
+
+        if not path.exists():
+            print(f"Файл или папка ({path}) не существует.")
             continue
 
         break
 
-    transcribed_audio = transcribe_audio(file)
-    save_to = f"output/transcribed_{file.name}.txt"
-    save_transcribed_to_file(transcribed_audio, save_to, True)
+    return path
 
-    print(f"File saved to {save_to}")
+
+def ask_are_files_correct(path: Path) -> list[Path]:
+    files = get_files_list(path)
+    print("Найденные файлы:")
+    for file in files:
+        print("\t-", file)
+    print()
+
+    while True:
+        agreed = (
+            input(
+                "Эти файлы будут отправлены на сервер AssemblyAI"
+                " для траскрибирования. Согласны?(д/н): "
+            )
+            .lower()
+            .strip()
+        )
+        match agreed:
+            case "д":
+                break
+            case "н":
+                exit(0)
+            case _:
+                print("Необходимо набрать 'д' или 'н'.")
+
+    return files
+
+
+def main():
+    load_setting()
+
+    path = ask_for_files()
+    files = ask_are_files_correct(path)
+
+    for file in files:
+        print(f"\nНачалась обработка файла '{file}'...")
+
+        try:
+            transcribed_audio = transcribe_audio(file)
+        except AudioBiggerThanTwoPointTwoGigabytes:
+            print(
+                f"Файл ({file}) не может быть обработан, "
+                "так как его размер привышает 2.2 Гб."
+            )
+            continue
+        except TranscribingError:
+            print("Во время транскрибирования произошла ошибка. Детали в log.txt")
+            with open("log.txt", "a") as log:
+                log.write(traceback.format_exc())
+                log.write("\n")
+            continue
+
+        save_to = f"output/{file.name}_transcribed.txt"
+        save_transcribed_to_file(transcribed_audio, save_to, True)
+
+        print(f"Файл сохранён как '{save_to}'.")
 
 
 if __name__ == "__main__":
