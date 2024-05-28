@@ -9,6 +9,10 @@ output/
 __pycache__/
 .venv/
 .pytest_cache/
+.python-version
 
 # VS Code
 .vscode/
+
+# App
+settings.toml

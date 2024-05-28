@@ -1,11 +1,17 @@
 from pathlib import Path
 
+import settings
 from transcribe_audio import save_transcribed_to_file, transcribe_audio
-
-eps = 1e-9
 
 
 def main():
+    if not settings.settings_file.exists():
+        print("Это ваш первый запуск программы, необходимо создать файл с настройками.")
+        settings.create_toml_settings()
+
+    settings.load_toml_settings()
+    print(f"Настройки загруженый из файла {settings.settings_file}.")
+
     while True:
         file_location = input("What file to transcribe?\n")
         file = Path(file_location)

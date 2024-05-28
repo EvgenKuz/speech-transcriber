@@ -5,7 +5,7 @@
 
 ## Установка и запуск
 
-1. Установить [Python 3.10+](https://www.python.org/downloads/)
+1. Установить [Python 3.11+](https://www.python.org/downloads/)
 2. Установить [Poetry](https://python-poetry.org/docs/)
 3. Установить зависимости, запустив `poetry install`
 4. Создать _.env_ файл:
@@ -16,7 +16,7 @@ ASSEMBLYAI_API_KEY=<AssemblyAI API ключ>
 
 ## Разработка
 
-1. Установить [Python 3.10+](https://www.python.org/downloads/)
+1. Установить [Python 3.11+](https://www.python.org/downloads/)
 2. Установить [Poetry](https://python-poetry.org/docs/)
 3. Установить зависимости, запустив `poetry install --with dev`
 4. Запустить `poetry run pre-commit install`
