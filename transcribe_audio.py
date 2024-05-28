@@ -3,18 +3,23 @@ from pathlib import Path
 
 import assemblyai as aai
 
-from env import ASSEMBLYAI_API_KEY
 from errors import AudioBiggerThanTwoPointTwoGigabytes, TranscribingError
-
-aai.settings.api_key = ASSEMBLYAI_API_KEY
-
-transcriber = aai.Transcriber()
-config = aai.TranscriptionConfig(speaker_labels=True, language_code="ru")
+from settings import load_toml_settings
 
 eps = 1e-9
 
 
+def create_transcriber() -> tuple[aai.Transcriber, aai.TranscriptionConfig]:
+    aai.settings.api_key = load_toml_settings()["api"]["tokens"]["assemblyai"]
+
+    transcriber = aai.Transcriber()
+    config = aai.TranscriptionConfig(speaker_labels=True, language_code="ru")
+
+    return transcriber, config
+
+
 def transcribe_audio(audio_location: PathLike) -> list[tuple[str | None, str]]:
+    transcriber, config = create_transcriber()
     audio_location = Path(audio_location)
 
     if not audio_location.exists() or not audio_location.is_file():
