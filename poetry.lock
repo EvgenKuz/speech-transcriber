@@ -173,6 +173,17 @@ files = [
 ]
 
 [[package]]
+name = "crossfiledialog"
+version = "0.2.0"
+description = "A Python wrapper for opening files and folders with the native file dialog."
+optional = false
+python-versions = ">=3.4"
+files = [
+    {file = "crossfiledialog-0.2.0-py3-none-any.whl", hash = "sha256:68d96e9bf0f266425139bcda778b405a5c581787f04ce1f7c491f2f8574b619d"},
+    {file = "crossfiledialog-0.2.0.tar.gz", hash = "sha256:e4d085a00b2cdbd5fd99543c0876080e18e8e5465ff13bf968b3b7cf3ade9359"},
+]
+
+[[package]]
 name = "distlib"
 version = "0.3.8"
 description = "Distribution utilities"
@@ -920,4 +931,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11,<3.13"
-content-hash = "0ff01aefff6561a8b4d18310dd002f80f9174cd291b0818c7276c5476cbae6a3"
+content-hash = "5a925dbd31e081822cec027aca6b1dc4e330505730285e97f334d8c5b1c52d37"
