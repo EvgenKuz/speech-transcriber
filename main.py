@@ -1,3 +1,4 @@
+import os
 import traceback
 from datetime import datetime
 from pathlib import Path
@@ -31,7 +32,7 @@ def load_setting():
 
 def ask_for_files() -> list[Path]:
     print(
-        "Надо ввести путь к аудиофайлу или папке с аудиофайлами, "
+        "Надо ввести путь к аудиофайлу или аудиофайлам, "
         "которые вы хотите транскрибировать."
     )
     files = crossfiledialog.open_multiple("Выберите файл(ы) для транскрибирования")
@@ -80,6 +81,7 @@ def ask_are_files_correct(files: list[Path]) -> list[Path]:
 
 def main():
     load_setting()
+    original_location = os.getcwd()
 
     files = ask_are_files_correct(ask_for_files())
 
@@ -102,6 +104,7 @@ def main():
             continue
 
         save_to = Path(
+            original_location,
             "output",
             f"{file.name}_transcribed_"
             f"{datetime.now().strftime('%d.%m.%YT%H-%M-%S')}.txt",
@@ -110,6 +113,8 @@ def main():
         save_transcribed_to_file(transcribed_audio, save_to, False)
 
         print(f"Файл сохранён как '{save_to}'.")
+
+    input("Нажмите ENTER, чтобы завершить программу...")
 
 
 if __name__ == "__main__":
